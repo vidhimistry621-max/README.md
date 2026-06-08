@@ -1,62 +1,28 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Card Layout</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Student Result Panel</title>
 </head>
 <body>
 
-    <h1 class="title">My Cards</h1>
+    <h1>Student Result Panel</h1>
 
-    <div class="container">
+    <input type="text" id="name" placeholder="Enter Name">
 
-        <div class="card">
-            <h2>Card 1</h2>
-            <p>First card</p>
-        </div>
+    <input type="number" id="sub1" placeholder="Subject 1 Marks">
+    <input type="number" id="sub2" placeholder="Subject 2 Marks">
+    <input type="number" id="sub3" placeholder="Subject 3 Marks">
+    <input type="number" id="sub4" placeholder="Subject 4 Marks">
+    <input type="number" id="sub5" placeholder="Subject 5 Marks">
+    <input type="number" id="sub6" placeholder="Subject 6 Marks">
 
-        <div class="card">
-            <h2>Card 2</h2>
-            <p>Second card</p>
-        </div>
+    <button onclick="addStudent()">
+        Add Student
+    </button>
 
-        <div class="card">
-            <h2>Card 3</h2>
-            <p>Third card</p>
-        </div>
+    <div id="studentList"></div>
 
-        <div class="card">
-            <h2>Card 4</h2>
-            <p>Fourth card</p>
-        </div>
-         </div>
-    <h1 class="grid-title">4x4 Grid Layout</h1>
-
-<div class="grid-container">
-    <div class="box">1</div>
-    <div class="box">2</div>
-    <div class="box">3</div>
-    <div class="box">4</div>
-
-    <div class="box">5</div>
-    <div class="box">6</div>
-    <div class="box">7</div>
-    <div class="box">8</div>
-
-    <div class="box">9</div>
-    <div class="box">10</div>
-    <div class="box">11</div>
-    <div class="box">12</div>
-
-    <div class="box">13</div>
-    <div class="box">14</div>
-    <div class="box">15</div>
-    <div class="box">16</div>
-</div>
-
-</div>
-
-  
+    <script src="script.js"></script>
 
 </body>
 </html>
