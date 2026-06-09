@@ -1,28 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Student Result Panel</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Student Profile System</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <h1>Student Result Panel</h1>
+<div class="container">
 
-    <input type="text" id="name" placeholder="Enter Name">
+    <div class="student-card">
 
-    <input type="number" id="sub1" placeholder="Subject 1 Marks">
-    <input type="number" id="sub2" placeholder="Subject 2 Marks">
-    <input type="number" id="sub3" placeholder="Subject 3 Marks">
-    <input type="number" id="sub4" placeholder="Subject 4 Marks">
-    <input type="number" id="sub5" placeholder="Subject 5 Marks">
-    <input type="number" id="sub6" placeholder="Subject 6 Marks">
+        <img src="C:\Users\Administrator\Desktop\js-basics-task\new.jpg" alt="Student">
 
-    <button onclick="addStudent()">
-        Add Student
-    </button>
+        <h2>Vidhi Mistry</h2>
 
-    <div id="studentList"></div>
+        <p><strong>ID:</strong> 101</p>
+        <p><strong>Age:</strong> 21</p>
+        <p><strong>Gender:</strong> Female</p>
 
-    <script src="script.js"></script>
+        <button onclick="viewProfile()">
+            View Profile
+        </button>
+
+    </div>
+
+    <div id="report" class="hidden"></div>
+
+</div>
+
+<script src="script.js"></script>
 
 </body>
 </html>
