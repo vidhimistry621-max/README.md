@@ -14,53 +14,52 @@ body{
 }
 
 .container{
-    width:800px;
-}
-
-.student-card,
-#report{
+    width:350px;
     background:white;
-    padding:20px;
+    padding:25px;
     border-radius:10px;
     box-shadow:0 0 10px rgba(0,0,0,0.2);
-    text-align:center;
 }
 
-.student-card img{
-    width:150px;
-    height:150px;
-    border-radius:50%;
-    object-fit:cover;
+h1{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+form{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+}
+
+input[type="email"],
+input[type="password"]{
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:5px;
+}
+
+.checkbox{
+    display:flex;
+    align-items:center;
+    gap:8px;
 }
 
 button{
-    margin-top:15px;
-    padding:10px 20px;
+    padding:10px;
     border:none;
-    background:black;
+    background:#007bff;
     color:white;
     border-radius:5px;
     cursor:pointer;
 }
 
 button:hover{
-    opacity:0.8;
+    background:#0056b3;
 }
 
-.hidden{
-    display:none;
-}
-
-table{
-    width:100%;
+#message{
+    text-align:center;
     margin-top:15px;
-    border-collapse:collapse;
-}
-
-table,th,td{
-    border:1px solid #ddd;
-}
-
-th,td{
-    padding:10px;
+    font-weight:bold;
 }

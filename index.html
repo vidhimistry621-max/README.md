@@ -1,37 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Student Profile System</title>
-<link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="container">
+    <div class="container">
 
-    <div class="student-card">
+        <h1>Login Form</h1>
 
-        <img src="C:\Users\Administrator\Desktop\js-basics-task\new.jpg" alt="Student">
+        <form id="loginForm">
 
-        <h2>Vidhi Mistry</h2>
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter Email"
+            >
 
-        <p><strong>ID:</strong> 101</p>
-        <p><strong>Age:</strong> 21</p>
-        <p><strong>Gender:</strong> Female</p>
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter Password"
+            >
 
-        <button onclick="viewProfile()">
-            View Profile
-        </button>
+            <label class="checkbox">
+                <input
+                    type="checkbox"
+                    id="showPassword"
+                >
+                Show Password
+            </label>
+
+            <button type="submit">
+                Login
+            </button>
+
+        </form>
+
+        <p id="message"></p>
 
     </div>
 
-    <div id="report" class="hidden"></div>
-
-</div>
-
-<script src="script.js"></script>
+    <script src="script.js"></script>
 
 </body>
 </html>

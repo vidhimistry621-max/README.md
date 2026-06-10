@@ -1,101 +1,71 @@
-let student = {
+const form = document.getElementById("loginForm");
+const message = document.getElementById("message");
 
-    id: 101,
-    name: "Vidhi Mistry",
-    age: 21,
-    gender: "Female",
+const password =
+document.getElementById("password");
 
-    subjects: {
-        English: 85,
-        Maths: 92,
-        Science: 88,
-        Computer: 95,
-        Gujarati: 80
-    }
+const showPassword =
+document.getElementById("showPassword");
 
-};
+showPassword.addEventListener("change", function(){
 
-function viewProfile(){
-
-    let marks = Object.values(student.subjects);
-
-    let total = marks.reduce((sum, mark) => sum + mark, 0);
-
-    let percentage = total / marks.length;
-
-    let grade = "";
-
-    if(percentage >= 90){
-        grade = "O";
-    }
-    else if(percentage >= 80){
-        grade = "A";
-    }
-    else if(percentage >= 70){
-        grade = "B";
-    }
-    else if(percentage >= 40){
-        grade = "P";
+    if(showPassword.checked){
+        password.type = "text";
     }
     else{
-        grade = "F";
+        password.type = "password";
     }
 
-    let result = percentage >= 40 ? "Pass" : "Fail";
+});
 
-    let rank = 1;
+form.addEventListener("submit", function(event){
 
-    let report = document.getElementById("report");
+    event.preventDefault();
 
-    report.classList.remove("hidden");
+    let email =
+    document.getElementById("email").value.trim();
 
-    report.innerHTML = `
+    let pass =
+    document.getElementById("password").value.trim();
 
-    <h2>${student.name} Report Card</h2>
+    if(email === ""){
+        message.innerHTML =
+        "Email is required";
+        message.style.color = "red";
+        return;
+    }
 
-    <table>
+    if(!email.includes("@")){
+        message.innerHTML =
+        "Enter valid email";
+        message.style.color = "red";
+        return;
+    }
 
-        <tr>
-            <th>Subject</th>
-            <th>Marks</th>
-        </tr>
+    if(pass === ""){
+        message.innerHTML =
+        "Password is required";
+        message.style.color = "red";
+        return;
+    }
 
-        <tr>
-            <td>English</td>
-            <td>${student.subjects.English}</td>
-        </tr>
+    if(pass.length < 6){
+        message.innerHTML =
+        "Password must be at least 6 characters";
+        message.style.color = "red";
+        return;
+    }
 
-        <tr>
-            <td>Maths</td>
-            <td>${student.subjects.Maths}</td>
-        </tr>
+    message.innerHTML =
+    "Login Successful ";
 
-        <tr>
-            <td>Science</td>
-            <td>${student.subjects.Science}</td>
-        </tr>
+    message.style.color = "green";
 
-        <tr>
-            <td>Computer</td>
-            <td>${student.subjects.Computer}</td>
-        </tr>
+    setTimeout(function(){
 
-        <tr>
-            <td>Gujarati</td>
-            <td>${student.subjects.Gujarati}</td>
-        </tr>
+        window.location.href =
+        "hello.html";
 
-    </table>
+    },1000);
 
-    <h3>Total Marks : ${total}</h3>
-
-    <h3>Percentage : ${percentage.toFixed(2)}%</h3>
-
-    <h3>Grade : ${grade}</h3>
-
-    <h3>Result : ${result}</h3>
-
-    <h3>Rank : ${rank}</h3>
-
-    `;
-}
+});
