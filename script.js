@@ -1,71 +1,157 @@
-const form = document.getElementById("loginForm");
-const message = document.getElementById("message");
+let movies = [];
 
-const password =
-document.getElementById("password");
 
-const showPassword =
-document.getElementById("showPassword");
+const addMovie = () => {
 
-showPassword.addEventListener("change", function(){
+    const title =
+        document.getElementById("title").value.trim();
 
-    if(showPassword.checked){
-        password.type = "text";
-    }
-    else{
-        password.type = "password";
-    }
+    const genre =
+        document.getElementById("genre").value.trim();
 
-});
+    const rating = Number(
+        document.getElementById("rating").value
+    );
 
-form.addEventListener("submit", function(event){
-
-    event.preventDefault();
-
-    let email =
-    document.getElementById("email").value.trim();
-
-    let pass =
-    document.getElementById("password").value.trim();
-
-    if(email === ""){
-        message.innerHTML =
-        "Email is required";
-        message.style.color = "red";
+    if (
+        title === "" ||
+        genre === ""
+    ) {
+        alert("Please fill all fields");
         return;
     }
 
-    if(!email.includes("@")){
-        message.innerHTML =
-        "Enter valid email";
-        message.style.color = "red";
+    if (
+        isNaN(rating) ||
+        rating < 1 ||
+        rating > 10
+    ) {
+        alert("Rating must be between 1 and 10");
         return;
     }
 
-    if(pass === ""){
-        message.innerHTML =
-        "Password is required";
-        message.style.color = "red";
+    const movie = {
+        title,
+        genre,
+        rating
+    };
+
+    movies.push(movie);
+
+    displayMovies();
+
+    
+    document.getElementById("title").value = "";
+    document.getElementById("genre").value = "";
+    document.getElementById("rating").value = "";
+};
+
+
+const displayMovies = () => {
+
+    const movieList =
+        document.getElementById("movieList");
+
+    movieList.innerHTML = "";
+
+    movies.forEach((movie, index) => {
+
+        movieList.innerHTML += `
+            <div class="movie">
+                <h3>${index + 1}. ${movie.title}</h3>
+                <p>Genre: ${movie.genre}</p>
+                <p>Rating: ${movie.rating}/10</p>
+            </div>
+        `;
+    });
+};
+
+
+const startWatching = () => {
+
+    if (movies.length < 3) {
+        alert("Please add at least 3 movies");
         return;
     }
 
-    if(pass.length < 6){
-        message.innerHTML =
-        "Password must be at least 6 characters";
-        message.style.color = "red";
+    displayCurrentMovie();
+
+    document.getElementById("playBtn").disabled = false;
+    document.getElementById("pauseBtn").disabled = true;
+    document.getElementById("watchBtn").disabled = true;
+};
+
+const displayCurrentMovie = () => {
+
+    const currentMovie =
+        document.getElementById("currentMovie");
+
+    if (movies.length === 0) {
+
+        currentMovie.innerHTML = `
+            <h2>🎉 All Movies Watched!</h2>
+        `;
+
+        document.getElementById("playBtn").disabled = true;
+        document.getElementById("pauseBtn").disabled = true;
+        document.getElementById("watchBtn").disabled = true;
+
         return;
     }
 
-    message.innerHTML =
-    "Login Successful ";
+    const movie = movies[0];
 
-    message.style.color = "green";
+    currentMovie.innerHTML = `
+        <h2>${movie.title}</h2>
+        <p>Genre: ${movie.genre}</p>
+        <p>Rating: ${movie.rating}/10</p>
+    `;
+};
 
-    setTimeout(function(){
 
-        window.location.href =
-        "hello.html";
+const playMovie = () => {
 
-    },1000);
+    document.getElementById("playBtn").disabled = true;
 
-});
+    document.getElementById("pauseBtn").disabled = false;
+};
+
+
+const pauseMovie = () => {
+
+    document.getElementById("pauseBtn").disabled = true;
+
+    document.getElementById("watchBtn").disabled = false;
+};
+
+
+const watchMovie = () => {
+
+    if (movies.length === 0) {
+        return;
+    }
+
+    const watchedMovie = movies[0];
+
+    alert(`${watchedMovie.title} watched successfully 🎉`);
+
+    movies.shift();
+
+    displayMovies();
+
+    displayCurrentMovie();
+
+    if (movies.length > 0) {
+
+        document.getElementById("playBtn").disabled = false;
+        document.getElementById("pauseBtn").disabled = true;
+        document.getElementById("watchBtn").disabled = true;
+
+    } else {
+
+        document.getElementById("playBtn").disabled = true;
+        document.getElementById("pauseBtn").disabled = true;
+        document.getElementById("watchBtn").disabled = true;
+    }
+
+};

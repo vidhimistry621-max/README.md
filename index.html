@@ -3,44 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Form</title>
+    <title>Movie Queue System</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="container">
 
-        <h1>Login Form</h1>
+        <h1>Movie Queue System</h1>
 
-        <form id="loginForm">
+        <div class="form">
 
             <input
-                type="email"
-                id="email"
-                placeholder="Enter Email"
+                type="text"
+                id="title"
+                placeholder="Enter Movie Title"
             >
 
             <input
-                type="password"
-                id="password"
-                placeholder="Enter Password"
+                type="text"
+                id="genre"
+                placeholder="Enter Genre"
             >
 
-            <label class="checkbox">
-                <input
-                    type="checkbox"
-                    id="showPassword"
-                >
-                Show Password
-            </label>
+            <input
+                type="number"
+                id="rating"
+                placeholder="Enter Rating (1-10)"
+                min="1"
+                max="10"
+            >
 
-            <button type="submit">
-                Login
+            <button type="button" onclick="addMovie()">
+                Add Movie
             </button>
 
-        </form>
+        </div>
 
-        <p id="message"></p>
+        <h2>Movie Queue</h2>
+
+        <div id="movieList"></div>
+
+        <button
+            type="button"
+            class="start-btn"
+            onclick="startWatching()"
+        >
+            Start Watching
+        </button>
+
+        <div id="currentMovie"></div>
+
+        <div class="controls">
+
+            <button
+                id="playBtn"
+                onclick="playMovie()"
+                disabled
+            >
+                ▶ Play
+            </button>
+
+            <button
+                id="pauseBtn"
+                onclick="pauseMovie()"
+                disabled
+            >
+                ⏸ Pause
+            </button>
+
+            <button
+                id="watchBtn"
+                onclick="watchMovie()"
+                disabled
+            >
+                ✅ Watch
+            </button>
+
+        </div>
 
     </div>
 
