@@ -3,88 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Queue System</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Random Quote Generator</title>
+    <link rel ="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="Container">
+        <h1>Random Quote Generator </h1>
+        <p class="quote">
+            Your heart is the size of an ocean. Go find yourself in its hidden depths
+        </p>
+        <p class="author">
+            <span>---</span>
+            <span class="Name">Author</span>
+        </p>
+        <p class="counter">Quotes Generated: 0</p>
+        <button class="quote-btn" onclick="getQuote(quoteAPIUrl);">
+            Generate New Quote</button>
 
-    <div class="container">
-
-        <h1>Movie Queue System</h1>
-
-        <div class="form">
-
-            <input
-                type="text"
-                id="title"
-                placeholder="Enter Movie Title"
-            >
-
-            <input
-                type="text"
-                id="genre"
-                placeholder="Enter Genre"
-            >
-
-            <input
-                type="number"
-                id="rating"
-                placeholder="Enter Rating (1-10)"
-                min="1"
-                max="10"
-            >
-
-            <button type="button" onclick="addMovie()">
-                Add Movie
-            </button>
-
-        </div>
-
-        <h2>Movie Queue</h2>
-
-        <div id="movieList"></div>
-
-        <button
-            type="button"
-            class="start-btn"
-            onclick="startWatching()"
-        >
-            Start Watching
-        </button>
-
-        <div id="currentMovie"></div>
-
-        <div class="controls">
-
-            <button
-                id="playBtn"
-                onclick="playMovie()"
-                disabled
-            >
-                ▶ Play
-            </button>
-
-            <button
-                id="pauseBtn"
-                onclick="pauseMovie()"
-                disabled
-            >
-                ⏸ Pause
-            </button>
-
-            <button
-                id="watchBtn"
-                onclick="watchMovie()"
-                disabled
-            >
-                ✅ Watch
-            </button>
-
-        </div>
-
+            <button class="fav-btn">Add favorite</button>
     </div>
-
-    <script src="script.js"></script>
-
+    
+    <script src ="script.js"></script>
 </body>
 </html>
