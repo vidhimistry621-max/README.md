@@ -1,63 +1,170 @@
-const quote = document.querySelector(".quote");
-const author = document.querySelector(".author");
-const quotebtn = document.querySelector(".quote-btn");
-const favbtn = document.querySelector(".favbtn");
-const counter = document.querySelector(".counter");
+const addBtn = document.querySelector(".addbtn");
+const habitInput = document.getElementById("habitInput");
+const habitList = document.querySelector(".habitList");
+const searchInput = document.querySelector(".searchInput");
 
-let quoteCount = 0;
+let habits =
+JSON.parse(localStorage.getItem("habits")) || [];
 
-const favBtn = document.querySelector(".fav-btn");
+function saveHabits() {
+    localStorage.setItem(
+        "habits",
+        JSON.stringify(habits)
+    );
+}
 
-favBtn.addEventListener("click", () => {
+function updateStats() {
 
-    const quoteText = quote.innerText;
-    const authorText = author.innerText;
+    const totalHabits = habits.length;
 
-    let favorites =
-        JSON.parse(localStorage.getItem("favorites")) || [];
+    const completedHabits =
+    habits.filter(h => h.completed).length;
 
-    favorites.push({
-        quote: quoteText,
-        author: authorText
+    const activeStreak =
+    habits.reduce(
+        (sum,h)=>sum+h.streak,
+        0
+    );
+
+    const longestStreak =
+    Math.max(
+        ...habits.map(
+            h=>h.longestStreak
+        ),
+        0
+    );
+
+    document.getElementById( "totalHabits" ).textContent = totalHabits;
+    document.getElementById( "completedHabits").textContent = completedHabits;
+    document.getElementById("activeStreak").textContent = activeStreak;
+    document.getElementById("longestStreak").textContent = longestStreak;
+}
+    function displayHabits(data = habits) {
+
+    habitList.innerHTML = "";
+
+    data.forEach(habit => {
+
+        let badge = "";
+
+        if(habit.streak >= 5){
+            badge = " Gold";
+        }
+        else if(habit.streak >= 3){
+            badge = "Silver";
+        }
+        else if(habit.streak >= 2){
+            badge = "Bronze";
+        }
+
+        const div = document.createElement("div");
+
+        div.classList.add("habitCard");
+
+        div.innerHTML = `<h3>${habit.name}</h3>
+
+        <p> Streak: ${habit.streak}</p>
+
+        <p>${badge}</p>
+
+        <button onclick="completeHabit(${habit.id})">Complete</button>
+
+        <button onclick="deleteHabit(${habit.id})">Delete</button>
+        `;
+
+        habitList.appendChild(div);
+    });
+}
+
+     addBtn.addEventListener("click", () => {
+
+    const name =habitInput.value.trim();
+
+    if(!name){
+        alert("Enter Habit Name");
+        return;
+    }
+
+    habits.push({
+        id: Date.now(),
+        name,
+        completed:false,
+        streak:0,
+        longestStreak:0,
+        lastCompleted:null
     });
 
-    localStorage.setItem(
-        "favorites",
-        JSON.stringify(favorites)
-    );
+    habitInput.value = "";
 
-    alert("add favorite !");
+    saveHabits();
+    displayHabits();
+    updateStats();
 });
 
-quotebtn.innerHTML= '<i class="fa-solid fa-spinner fa-spin"></i>Loading Qutoe';
+function completeHabit(id){
 
-const quoteAPIUrl ="https://dummyjson.com/quotes"
+    const today =
+    new Date().toDateString();
 
-const getQuote = async (apiUrl )=>{
-    const result = await fetch(apiUrl);
-    const data = await result.json();
+    habits = habits.map(habit => {
 
-    const randomIndex = Math.floor(
-        Math.random() *data.quotes.length
+        if(habit.id === id){
+
+            if(
+                habit.lastCompleted !== today
+            ){
+
+                habit.completed = true;
+
+                habit.streak++;
+
+                habit.lastCompleted =
+                today;
+
+                if(
+                    habit.streak >
+                    habit.longestStreak
+                ){
+                    habit.longestStreak =
+                    habit.streak;
+                }
+            }
+        }
+
+        return habit;
+    });
+
+    saveHabits();
+    displayHabits();
+    updateStats();
+}
+
+function deleteHabit(id){
+
+    habits =habits.filter( habit => habit.id !== id
     );
 
-    const randomQuote = data.quotes[ randomIndex];
+    saveHabits();
+    displayHabits();
+    updateStats();
+}
 
-    quote.innerText = randomQuote.quote;
-    author.innerText = randomQuote.author;
+ searchInput.addEventListener("input",() => {
 
-     quoteCount++;
-     counter.innerText =
-        `Quotes Generated: ${quoteCount}`;
+        const value =
+        searchInput.value
+        .toLowerCase();
 
-    
-    quotebtn.innerHTML ="Get new Quote";
+        const filtered =
+        habits.filter(habit =>
+            habit.name
+            .toLowerCase()
+            .includes(value)
+        );
 
-     console.log({
-     id: randomQuote.id,
-     quote: randomQuote.quote,
-     author: randomQuote.author
-});
-};
+        displayHabits(filtered);
+    }
+);
 
-getQuote(quoteAPIUrl);
+displayHabits();
+updateStats();

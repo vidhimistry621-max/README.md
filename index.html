@@ -1,28 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Random Quote Generator</title>
-    <link rel ="stylesheet" href="style.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Habit Streak Tracker</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="Container">
-        <h1>Random Quote Generator </h1>
-        <p class="quote">
-            Your heart is the size of an ocean. Go find yourself in its hidden depths
-        </p>
-        <p class="author">
-            <span>---</span>
-            <span class="Name">Author</span>
-        </p>
-        <p class="counter">Quotes Generated: 0</p>
-        <button class="quote-btn" onclick="getQuote(quoteAPIUrl);">
-            Generate New Quote</button>
 
-            <button class="fav-btn">Add favorite</button>
+<div class="container">
+    <h1>Habit Streak Tracker</h1>
+
+    <input type="text" id="habitInput" placeholder="Enter Habit">
+    <input type="search" class="searchInput" placeholder="Search Habit">
+
+    <button class="addbtn">Add Habit</button>
+
+    <div class="stats">
+        <div class="card">
+            <h3>Total Habits</h3>
+            <p id="totalHabits">0</p>
+        </div>
+
+        <div class="card">
+            <h3>Completed Today</h3>
+            <p id="completedHabits">0</p>
+        </div>
+
+        <div class="card">
+            <h3>Active Streak</h3>
+            <p id="activeStreak">0</p>
+        </div>
+
+        <div class="card">
+            <h3>Longest Streak</h3>
+            <p id="longestStreak">0</p>
+        </div>
     </div>
-    
-    <script src ="script.js"></script>
+
+    <div class="habitList"></div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
