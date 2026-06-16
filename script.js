@@ -1,170 +1,199 @@
-const addBtn = document.querySelector(".addbtn");
-const habitInput = document.getElementById("habitInput");
-const habitList = document.querySelector(".habitList");
-const searchInput = document.querySelector(".searchInput");
+const gameBoard = document.getElementById("gameBoard");
 
-let habits =
-JSON.parse(localStorage.getItem("habits")) || [];
+const movesText = document.getElementById("moves");
+const matchedText = document.getElementById("matched");
+const message = document.getElementById("message");
 
-function saveHabits() {
-    localStorage.setItem(
-        "habits",
-        JSON.stringify(habits)
-    );
-}
+const bestScoreText = document.getElementById("bestScore");
+const leastMovesText = document.getElementById("leastMoves");
+const winsText = document.getElementById("wins");
+const bestTimeText = document.getElementById("bestTime");
 
-function updateStats() {
+const timerText = document.getElementById("timer");
+const resetBtn = document.getElementById("resetBtn");
 
-    const totalHabits = habits.length;
+let cards = ["🐶","🐱","🍎","🍌","🐶","🐱","🍎","🍌"];
 
-    const completedHabits =
-    habits.filter(h => h.completed).length;
+let firstCard = null;
+let secondCard = null;
+let lockBoard = false;
 
-    const activeStreak =
-    habits.reduce(
-        (sum,h)=>sum+h.streak,
-        0
-    );
+let moves = 0;
+let matchedPairs = 0;
 
-    const longestStreak =
-    Math.max(
-        ...habits.map(
-            h=>h.longestStreak
-        ),
-        0
-    );
+let seconds = 0;
 
-    document.getElementById( "totalHabits" ).textContent = totalHabits;
-    document.getElementById( "completedHabits").textContent = completedHabits;
-    document.getElementById("activeStreak").textContent = activeStreak;
-    document.getElementById("longestStreak").textContent = longestStreak;
-}
-    function displayHabits(data = habits) {
+let timer = setInterval(() => {
+    seconds++;
+    timerText.innerText = seconds;
+},1000);
 
-    habitList.innerHTML = "";
+cards.sort(() => Math.random() - 0.5);
 
-    data.forEach(habit => {
+function createBoard(){
 
-        let badge = "";
+    gameBoard.innerHTML = "";
 
-        if(habit.streak >= 5){
-            badge = " Gold";
-        }
-        else if(habit.streak >= 3){
-            badge = "Silver";
-        }
-        else if(habit.streak >= 2){
-            badge = "Bronze";
-        }
+    cards.forEach((emoji)=>{
 
-        const div = document.createElement("div");
+        const card = document.createElement("div");
 
-        div.classList.add("habitCard");
+        card.classList.add("card");
 
-        div.innerHTML = `<h3>${habit.name}</h3>
+        card.dataset.value = emoji;
 
-        <p> Streak: ${habit.streak}</p>
+        card.innerText = "?";
 
-        <p>${badge}</p>
+        card.addEventListener("click",flipCard);
 
-        <button onclick="completeHabit(${habit.id})">Complete</button>
+        gameBoard.appendChild(card);
 
-        <button onclick="deleteHabit(${habit.id})">Delete</button>
-        `;
-
-        habitList.appendChild(div);
     });
+
 }
 
-     addBtn.addEventListener("click", () => {
+function flipCard(){
 
-    const name =habitInput.value.trim();
+    if(lockBoard) return;
 
-    if(!name){
-        alert("Enter Habit Name");
+    if(this === firstCard) return;
+
+    this.innerText = this.dataset.value;
+    this.classList.add("flipped");
+
+    if(!firstCard){
+
+        firstCard = this;
         return;
+
     }
 
-    habits.push({
-        id: Date.now(),
-        name,
-        completed:false,
-        streak:0,
-        longestStreak:0,
-        lastCompleted:null
-    });
+    secondCard = this;
 
-    habitInput.value = "";
+    moves++;
+    movesText.innerText = moves;
 
-    saveHabits();
-    displayHabits();
-    updateStats();
-});
+    checkMatch();
 
-function completeHabit(id){
+}
 
-    const today =
-    new Date().toDateString();
+function checkMatch(){
 
-    habits = habits.map(habit => {
+    if(firstCard.dataset.value === secondCard.dataset.value){
 
-        if(habit.id === id){
+        matchedPairs++;
 
-            if(
-                habit.lastCompleted !== today
-            ){
+        matchedText.innerText = matchedPairs;
 
-                habit.completed = true;
+        firstCard.removeEventListener("click",flipCard);
+        secondCard.removeEventListener("click",flipCard);
 
-                habit.streak++;
+        resetCards();
 
-                habit.lastCompleted =
-                today;
+        if(matchedPairs === 4){
 
-                if(
-                    habit.streak >
-                    habit.longestStreak
-                ){
-                    habit.longestStreak =
-                    habit.streak;
-                }
-            }
+            winGame();
+
         }
 
-        return habit;
-    });
+    }
+    else{
 
-    saveHabits();
-    displayHabits();
-    updateStats();
+        lockBoard = true;
+
+        setTimeout(()=>{
+
+            firstCard.innerText = "?";
+            secondCard.innerText = "?";
+
+            firstCard.classList.remove("flipped");
+            secondCard.classList.remove("flipped");
+
+            resetCards();
+
+        },1000);
+
+    }
+
 }
 
-function deleteHabit(id){
+function resetCards(){
 
-    habits =habits.filter( habit => habit.id !== id
-    );
+    firstCard = null;
+    secondCard = null;
+    lockBoard = false;
 
-    saveHabits();
-    displayHabits();
-    updateStats();
 }
 
- searchInput.addEventListener("input",() => {
+function winGame(){
 
-        const value =
-        searchInput.value
-        .toLowerCase();
+    clearInterval(timer);
 
-        const filtered =
-        habits.filter(habit =>
-            habit.name
-            .toLowerCase()
-            .includes(value)
+    message.innerText = "🎉 Congratulations! You Won!";
+
+    let bestScore =
+        Number(localStorage.getItem("bestScore")) || 0;
+
+    bestScore += 10;
+
+    localStorage.setItem("bestScore",bestScore);
+
+    let wins =
+        Number(localStorage.getItem("wins")) || 0;
+
+    wins++;
+
+    localStorage.setItem("wins",wins);
+
+    let leastMoves =
+        Number(localStorage.getItem("leastMoves"));
+
+    if(!leastMoves || moves < leastMoves){
+
+        localStorage.setItem(
+            "leastMoves",
+            moves
         );
 
-        displayHabits(filtered);
     }
-);
 
-displayHabits();
-updateStats();
+    let bestTime =
+        Number(localStorage.getItem("bestTime"));
+
+    if(!bestTime || seconds < bestTime){
+
+        localStorage.setItem(
+            "bestTime",
+            seconds
+        );
+
+    }
+
+    loadRecords();
+
+}
+
+function loadRecords(){
+
+    bestScoreText.innerText =
+        localStorage.getItem("bestScore") || 0;
+
+    leastMovesText.innerText =
+        localStorage.getItem("leastMoves") || 0;
+
+    winsText.innerText =
+        localStorage.getItem("wins") || 0;
+
+    bestTimeText.innerText =
+        localStorage.getItem("bestTime") || 0;
+
+}
+
+resetBtn.addEventListener("click",()=>{
+
+    location.reload();
+
+});
+
+createBoard();
+loadRecords();
